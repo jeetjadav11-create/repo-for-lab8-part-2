@@ -18,7 +18,7 @@ public class Game
 {
     private Parser parser;
     private Room currentRoom;
-        
+
     /**
      * Create the game and initialise its internal map.
      */
@@ -34,14 +34,14 @@ public class Game
     private void createRooms()
     {
         Room outside, theater, pub, lab, office;
-      
+
         // create the rooms
         outside = new Room("outside the main entrance of the university");
         theater = new Room("in a lecture theater");
         pub = new Room("in the campus pub");
         lab = new Room("in a computing lab");
         office = new Room("in the computing admin office");
-        
+
         // initialise room exits
         outside.setExit("east", theater);
         outside.setExit("south", lab);
@@ -69,7 +69,7 @@ public class Game
 
         // Enter the main command loop.  Here we repeatedly read commands and
         // execute them until the game is over.
-                
+
         boolean finished = false;
         while (! finished) {
             Command command = parser.getCommand();
@@ -100,6 +100,7 @@ public class Game
     {
         boolean wantToQuit = false;
 
+        
         if(command.isUnknown()) {
             System.out.println("I don't know what you mean...");
             return false;
@@ -115,6 +116,10 @@ public class Game
         else if (commandWord.equals("quit")) {
             wantToQuit = quit(command);
         }
+        else if (commandWord.equals("commands")) {
+            System.out.print(parser.getCommandDetails());
+        }
+
         // else command not recognised.
         return wantToQuit;
     }
@@ -132,7 +137,8 @@ public class Game
         System.out.println("around at the university.");
         System.out.println();
         System.out.println("Your command words are:");
-        parser.showCommands();
+        System.out.println(parser.getCommandList());
+
     }
 
     /** 
