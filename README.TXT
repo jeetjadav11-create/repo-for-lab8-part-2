@@ -37,3 +37,4 @@ In World of Zuul, this separation reduces coupling and makes the program easier 
 The Game class should only print the description when the player enters a room.
 Doing it this way keeps the code simpler and avoids mixing game data with printing logic.
 
+28)Yes

@@ -1,3 +1,5 @@
+import java.util.Stack;
+
 /**
  *  This class is the main class of the "World of Zuul" application. 
  *  "World of Zuul" is a very simple, text based adventure game.  Users 
@@ -19,6 +21,7 @@ public class Game
     private Parser parser;
     private Room currentRoom;
     private Room previousRoom;
+    private Stack<Room> roomHistory;
 
     /**
      * Create the game and initialise its internal map.
@@ -27,6 +30,7 @@ public class Game
     {
         createRooms();
         parser = new Parser();
+        roomHistory = new Stack<>();
     }
 
     /**
@@ -59,8 +63,6 @@ public class Game
 
         Item map = new Item("a campus map", 1);
         Item drink = new Item("a cold drink", 2);
-
-      
 
         outside.addItem(new Item("a campus map", 1));
         outside.addItem(new Item("a brochure", 1));
@@ -118,24 +120,36 @@ public class Game
         }
 
         String commandWord = command.getCommandWord();
-        if (commandWord.equals("help")) {
-            printHelp();
-        }
-        else if (commandWord.equals("go")) {
-            goRoom(command);
-        }
-        else if (commandWord.equals("quit")) {
-            wantToQuit = quit(command);
-        }
-        else if (commandWord.equals("commands")) {
-            System.out.print(parser.getCommandDetails());
-        }
-        else if (commandWord.equals("back")) {
-            if(command.hasSecondWord()) {
-                System.out.println("Back what?");
-            } else {
-                back();
-            }
+        switch(commandWord) {
+            case "help":
+                printHelp();
+                break;
+
+            case "go":
+                goRoom(command);
+                break;
+
+            case "back":
+                if(command.hasSecondWord()) {
+                    System.out.println("Back what?");
+                }
+                else {
+                    back();
+                }
+                break;
+
+            case "commands":
+                System.out.print(parser.getCommandDetails());
+                break;
+
+            case "quit":
+                wantToQuit = quit(command);
+                break;
+
+            default:
+                System.out.println("I don't know what you mean...");
+                System.out.println("Available commands: " + parser.getCommandList());
+                break;
         }
 
         // else command not recognised.
@@ -180,6 +194,7 @@ public class Game
             System.out.println("There is no door!");
         }
         else {
+            roomHistory.push(currentRoom);
             previousRoom = currentRoom;
             currentRoom = nextRoom;
             System.out.println(currentRoom.getLongDescription());
@@ -188,13 +203,13 @@ public class Game
 
     private void back()
     {
-        if(previousRoom == null) {
+        if(roomHistory.isEmpty()) {
             System.out.println("You can't go back.");
             return;
         }
 
-        currentRoom = previousRoom;
-        previousRoom = null; // so back won't work twice
+        currentRoom = roomHistory.pop();
+
         System.out.println(currentRoom.getLongDescription());
     }
 
