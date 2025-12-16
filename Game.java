@@ -18,6 +18,7 @@ public class Game
 {
     private Parser parser;
     private Room currentRoom;
+    private Room previousRoom;
 
     /**
      * Create the game and initialise its internal map.
@@ -35,7 +36,6 @@ public class Game
     {
         Room outside, theater, pub, lab, office;
 
-        
         // create the rooms
         outside = new Room("outside the main entrance of the university");
         theater = new Room("in a lecture theater");
@@ -60,8 +60,13 @@ public class Game
         Item map = new Item("a campus map", 1);
         Item drink = new Item("a cold drink", 2);
 
-        outside.setItem(map);
-        pub.setItem(drink);
+      
+
+        outside.addItem(new Item("a campus map", 1));
+        outside.addItem(new Item("a brochure", 1));
+
+        pub.addItem(new Item("a cold drink", 2));
+        pub.addItem(new Item("some snacks", 1));
 
         // start game outside
         currentRoom = outside;  
@@ -125,6 +130,13 @@ public class Game
         else if (commandWord.equals("commands")) {
             System.out.print(parser.getCommandDetails());
         }
+        else if (commandWord.equals("back")) {
+            if(command.hasSecondWord()) {
+                System.out.println("Back what?");
+            } else {
+                back();
+            }
+        }
 
         // else command not recognised.
         return wantToQuit;
@@ -168,9 +180,22 @@ public class Game
             System.out.println("There is no door!");
         }
         else {
+            previousRoom = currentRoom;
             currentRoom = nextRoom;
             System.out.println(currentRoom.getLongDescription());
         }
+    }
+
+    private void back()
+    {
+        if(previousRoom == null) {
+            System.out.println("You can't go back.");
+            return;
+        }
+
+        currentRoom = previousRoom;
+        previousRoom = null; // so back won't work twice
+        System.out.println(currentRoom.getLongDescription());
     }
 
     /** 
