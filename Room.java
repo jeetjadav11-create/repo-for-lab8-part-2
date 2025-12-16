@@ -19,6 +19,7 @@ public class Room
     private String description;
     // stores exits of this room.
     private HashMap<String, Room> exits;        
+    private Item item;
 
     /**
      * Create a room described "description". Initially, it has no exits. 
@@ -31,6 +32,20 @@ public class Room
         exits = new HashMap<>();
     }
 
+    public void setItem(Item item)
+    {
+        this.item = item;
+    }
+
+    private String getItemString()
+    {
+        if(item == null) {
+            return "No item here.";
+        }
+        return "Item: " + item.getDescription() + " (weight: " + item.getWeight() + ")";
+    }
+
+    
     /**
      * Define an exit from this room.
      * @param direction The direction of the exit.
@@ -58,7 +73,9 @@ public class Room
      */
     public String getLongDescription()
     {
-        return "You are " + description + ".\n" + getExitString();
+        return "You are " + description + ".\n" + 
+        getExitString()+ "\n" +
+        getItemString();
     }
 
     /**

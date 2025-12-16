@@ -35,6 +35,7 @@ public class Game
     {
         Room outside, theater, pub, lab, office;
 
+        
         // create the rooms
         outside = new Room("outside the main entrance of the university");
         theater = new Room("in a lecture theater");
@@ -55,6 +56,12 @@ public class Game
         lab.setExit("east", office);
 
         office.setExit("west", lab);
+
+        Item map = new Item("a campus map", 1);
+        Item drink = new Item("a cold drink", 2);
+
+        outside.setItem(map);
+        pub.setItem(drink);
 
         // start game outside
         currentRoom = outside;  
@@ -100,7 +107,6 @@ public class Game
     {
         boolean wantToQuit = false;
 
-        
         if(command.isUnknown()) {
             System.out.println("I don't know what you mean...");
             return false;

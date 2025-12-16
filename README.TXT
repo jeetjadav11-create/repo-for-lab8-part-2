@@ -24,3 +24,16 @@ The goal is to extend the game:
   - (anything you can think of, really...)
 
 Read chapter 8 of the book to get a detailed description of the project.
+
+
+22)MVC is a design pattern that separates a program into the Model, the View, and the Controller.
+The Model stores the game data and logic, such as the rooms and items.
+The Controller reads the user’s commands and decides what actions to perform, for example moving between rooms.
+The View displays information to the user through text printed on the screen.
+In World of Zuul, this separation reduces coupling and makes the program easier to understand and modify.
+
+
+24)The item description should be created in the Item or Room class because that’s where the item information is stored.
+The Game class should only print the description when the player enters a room.
+Doing it this way keeps the code simpler and avoids mixing game data with printing logic.
+
